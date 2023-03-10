@@ -1,0 +1,208 @@
+{% extends 'display.html' %}
+
+{% block pageTitle %}Event Details{% endblock %}
+
+{% block displayMain %}
+<div class="container">
+    <div class="row gx-3 gy-4">
+
+        <div class="col-lg-4">
+            <div class="card text-center" style="border-radius: 0%; box-shadow: 0px 0 30px rgb(1 41 112 / 8%);">
+                <img src="/static/halls/{{venueId}}.jpg" class="card-img-top" alt="">
+                <div class="card-body">
+                    {{venue}}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="portfolio-info" style="height: 100%;">
+                <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+                <p style="background-color: #012970; height: fit-content; padding: 0 15px; border-radius: 20px; color: white; justify-self: right; width: fit-content;">ID: {{id}}</p>
+                {% if "Approved" in final %}
+                    <p style="background-color: green; height: fit-content; padding: 0 15px; border-radius: 20px; color: white; justify-self: right; width: fit-content;">Approved</p>
+                {% elif "Rejected" in final %}
+                    <p style="background-color: red; height: fit-content; padding: 0 15px; border-radius: 20px; color: white; justify-self: right; width: fit-content;">Rejected</p>
+                {% elif "Pending" in final %}
+                    <p style="background-color: orange; height: fit-content; padding: 0 15px; border-radius: 20px; color: white; justify-self: right; width: fit-content;">Pending</p>
+                {% elif "Expired" in final %}
+                    <p style="background-color: grey; height: fit-content; padding: 0 15px; border-radius: 20px; color: white; justify-self: right; width: fit-content;">Outdated</p>
+                {% endif %}
+
+                </div>
+                <h3>Event Details</h3>
+                <div class="row">
+                    <div class="col-lg-7">
+                        <ul style="margin: 0;">
+                            <li><strong>Event Name</strong>: {{name}}</li>
+                            <li><strong>Organizer</strong>: {{first_name}}</li>
+                            <li><strong>Organizer Email</strong>: {{organizer_email}}</li>
+                            <li><strong>HoD Approached</strong>: {{HoD}}</li>
+                            <li><strong>Venue</strong>: {{venue}}</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-5">
+                        <ul style="margin: 0;">
+                            <li><strong>Event Date</strong>: {{Date}}</li>
+                            <li><strong>Start Time</strong>: {{startTime}}</li>
+                            <li><strong>End Time</strong>: {{endTime}}</li>
+                            <li><strong>Expected Audience</strong>: {{audience}}</li>
+                            <li><strong>Status</strong>: {{status}}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if request.session.role == "Staff" %}
+        <div class="col-lg-6">
+            <div class="portfolio-info" style="height: 100%;">
+                <h3>Agenda</h3>
+                <div style="font-size: 15px;">
+                {{agenda}}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="portfolio-info" style="height: 100%;">
+                <h3>Feedback Provided</h3>
+                {% if hod_feedback %}
+                    <h6><strong>HoD Feedback:</strong></h6>
+                    <div style="font-size: 15px;">
+                        {{hod_feedback}}
+                    </div>
+                {% endif %}
+                {% if admin_feedback %}
+                    <h6><strong>Admin Feedback:</strong></h6>
+                    <div style="font-size: 15px;">
+                        {{admin_feedback}}
+                    </div>
+                {% else %}
+                <div style="font-size: 15px;">
+                    -
+                </div>
+                {% endif %}                
+            </div>
+        </div>
+        {% elif request.session.role == "HoD" %}
+        <div class="col-lg-6">
+            <div class="portfolio-info" style="height: 100%;">
+                <h3>Agenda</h3>
+                <div style="font-size: 15px;">
+                {{agenda}}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="portfolio-info" style="height: 100%;">
+                {% if hod_feedback %}
+                    <h3>Feedback</h3>
+                    <h6><strong>HoD Feedback:</strong></h6>
+                    <div style="font-size: 15px;">
+                        {{hod_feedback}}
+                    </div>
+                {% if admin_feedback %}
+                    <h6><strong>Admin Feedback:</strong></h6>
+                    <div style="font-size: 15px;">
+                        {{admin_feedback}}
+                    </div>
+                {% endif %}
+                {% else %}
+                    <h3>Provide Feedback</h3>
+                    <form action="{% url 'event_request' eventId %}" method="post" class="vb_form">
+                        {% csrf_token %}
+                        <div class="col-md-12">
+                            <textarea class="form-control" name="feedback" rows="4" placeholder="Please provide feedback/suggestions for approving or rejecting the booking request." required></textarea>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <select id="action_select" name="action" class="form-select" aria-label="" style="visibility: hidden;">
+                                <option value="approve"></option>
+                                <option value="reject"></option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-12 text-center" style="display: flex; gap: 10px; margin-top: 10px; justify-content: right;">
+                            <button class="btn btn-success" onclick="submitFormWith('approve')">Approve</button>
+                            <button class="btn btn-danger" onclick="submitFormWith('reject')">Reject</button>
+                        </div>
+
+                        <div class="col-md-4">
+                              <button id="submit_feedback_form" type="submit" style="visibility: hidden;">Submit</button>
+                        </div>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+        {% elif request.session.role == "Admin" %}
+        <div class="col-lg-6">
+            <div class="portfolio-info" style="height: 100%;">
+                <h3>Agenda</h3>
+                <div style="font-size: 15px;">
+                {{agenda}}
+                </div>
+                {% if hod_feedback %}
+                    <br><br>
+                    <h3>HoD Feedback</h3>
+                    <div style="font-size: 15px;">
+                    {{hod_feedback}}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="portfolio-info" style="height: 100%;">
+                {% if admin_feedback %}
+                    <h3>Your Feedback</h3>
+                    <div style="font-size: 15px;">
+                        {{admin_feedback}}
+                    </div>
+                {% else %}
+                    <h3>Provide Feedback</h3>
+                    <form action="{% url 'event_request' eventId %}" method="post" class="vb_form">
+                        {% csrf_token %}
+                        <div class="col-md-12">
+                            <textarea class="form-control" name="feedback" rows="4" placeholder="Please provide feedback/suggestions for approving or rejecting the booking request." required></textarea>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <select id="action_select" name="action" class="form-select" aria-label="" style="visibility: hidden;">
+                                <option value="approve"></option>
+                                <option value="reject"></option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-12 text-center" style="display: flex; gap: 10px; margin-top: 10px; justify-content: right;">
+                            <button class="btn btn-success" onclick="submitFormWith('approve')">Approve</button>
+                            <button class="btn btn-danger" onclick="submitFormWith('reject')">Reject</button>
+                        </div>
+
+                        <div class="col-md-4">
+                              <button id="submit_feedback_form" type="submit" style="visibility: hidden;">Submit</button>
+                        </div>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
+
+{% block styleToDisplay %}
+{% endblock %}
+
+{% block scriptToDisplay %}
+
+<script>
+    function submitFormWith(action) {
+        document.getElementById("action_select").value = action;
+        document.getElementById("submit_feedback_form").click();
+    }
+</script>
+
+{% endblock %}

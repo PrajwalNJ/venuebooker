@@ -1,0 +1,105 @@
+{% extends 'user.html' %}
+
+{% block sideMenuContent %}
+<div class="accordion-item">
+    <h2 class="accordion-header" id="flush-headingOne">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#flush-collapseOne" aria-expanded="false"
+            aria-controls="flush-collapseOne">
+            Manage HoDs
+        </button>
+    </h2>
+    <div id="flush-collapseOne" class="accordion-collapse collapse"
+        aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+        <div class="accordion-body" style="padding: 0;">
+            <div style="display: flex; flex-direction: column; pointer-events: visible;">
+              <a href="{% url 'admin_addHoD' %}" style="color: #212529;"><div class="inner-menu-item">Add New HoD</div></a>
+              <a href="{% url 'admin_viewHoD' %}" style="color: #212529;"><div class="inner-menu-item">View HoD</div></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header" id="flush-headingTwo">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#flush-collapseTwo" aria-expanded="false"
+            aria-controls="flush-collapseTwo">
+            Manage Seminar Halls
+        </button>
+    </h2>
+    <div id="flush-collapseTwo" class="accordion-collapse collapse"
+        aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+        <div class="accordion-body" style="padding: 0;">
+            <div style="display: flex; flex-direction: column; pointer-events: visible;">
+              <a href="{% url 'admin_addSem' %}" style="color: #212529;"><div class="inner-menu-item">Add a Seminar Hall</div></a>
+              <a href="{% url 'admin_updateSem' %}" style="color: #212529;"><div class="inner-menu-item">Update/Block Seminar Hall</div></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header" id="flush-headingThree">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#flush-collapseThree" aria-expanded="false"
+            aria-controls="flush-collapseThree">
+            Bookings
+        </button>
+    </h2>
+    <div id="flush-collapseThree" class="accordion-collapse collapse"
+        aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+        <div class="accordion-body" style="padding: 0;">
+            <div style="display: flex; flex-direction: column; pointer-events: visible;">
+              <a href="{% url 'admin_booking' %}" style="color: #212529;"><div class="inner-menu-item">Make Booking</div></a>
+              <a href="{% url 'view_bookings' %}" style="color: #212529;"><div class="inner-menu-item">View My Bookings</div></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header" id="flush-headingFour">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+            data-bs-target="#flush-collapseFour" aria-expanded="false"
+            aria-controls="flush-collapseFour">
+            Manage Requests
+        </button>
+    </h2>
+    <div id="flush-collapseFour" class="accordion-collapse collapse"
+        aria-labelledby="flush-headingFour" data-bs-parent="#accordionFlushExample">
+        <div class="accordion-body" style="padding: 0;">
+            <div style="display: flex; flex-direction: column; pointer-events: visible;">
+              <a href="{% url 'admin_requests' %}" style="color: #212529;"><div class="inner-menu-item">View Booking Requests</div></a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block rightUserContent %}
+
+<section class="contact menu-content-item">
+    <div class="container">
+    
+        <div class="row gy-4">
+    
+          <div class="col-lg-12" style="display: flex; justify-content: center; align-items: center;">
+            <img src="/static/admin.jpg" alt="" style="width: 60%;">              
+          </div>
+    
+        </div>
+    
+    </div>
+</section>
+
+{% endblock %}
+
+
+{% block styleToUser %}
+{% endblock %}
+
+
+{% block scriptToUser %}
+{% endblock %}

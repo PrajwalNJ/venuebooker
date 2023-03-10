@@ -1,0 +1,50 @@
+{% extends 'admin_main.html' %}
+
+{% block rightUserContent %}
+
+<section id="add_sem" class="contact menu-content-item">
+    <div class="container">
+
+        <header class="section-header">
+          <p>Add Seminar Hall</p>
+        </header>
+    
+        <div class="row gy-4">
+    
+          <div class="col-lg-12">
+            <form method="post" class="vb_form" style="background-color: #f2f5ff; padding: 30px;" enctype="multipart/form-data">
+              {% csrf_token %}  
+              <div class="row gy-4">              
+                <div class="col-md-12">
+                  <input type="text" class="form-control" name="sem_name" placeholder="Seminar Hall Name" required>
+                </div>
+                
+                <div class="col-md-12">
+                  <input type="number" class="form-control" name="sem_capacity" placeholder="Seminar Hall Capacity" required>
+                </div>
+                
+                <div class="col-md-12">
+                    <textarea class="form-control" name="sem_incharge" rows="3" placeholder="Incharge Details (Name, Ph. No., ..)" required></textarea>
+                </div>               
+    
+                <!-- enctype="multipart/form-data" -->
+                <div class="col-md-12">
+                    <!-- put for = /name/ -->
+                    <label for="sem_pic" class="form-label">Add Seminar Hall Picture:</label>
+                    <input type="file" name="sem_pic" class="form-control" accept="image/*" required>
+                </div>
+    
+                <div class="col-md-12 text-center">              
+                  <button type="submit">Submit</button>
+                </div>
+    
+              </div>
+            </form>              
+          </div>
+    
+        </div>
+    
+    </div>
+</section>
+
+{% endblock %}

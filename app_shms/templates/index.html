@@ -1,0 +1,418 @@
+{% extends 'base.html' %}
+
+{% block styleToBase %}
+  <style>
+    .date-time-field:before {
+      content: var(--label);
+      margin-right: .6em;
+      color: gray;
+    }
+
+    .form-select {
+      padding: 10px 15px;
+      box-shadow: none;
+      font-size: 14px;
+      border-radius: 0;
+    }
+
+    /* .i.bi.bi-calendar2::after {
+      content: var(--day);
+      font-style: normal;
+      font-size: 0.375em;
+      font-family: cursive;
+      display: inline-block;
+      transform: translateX(-36.5px);
+      vertical-align: 0.25em;
+    } */
+
+    /*  Calendar Day
+     *
+     */
+  </style>
+{% endblock %}
+
+
+{% block navbar %}
+  <ul>
+    <li><a class="nav-link scrollto" href="#hero">Home</a></li>
+    <li><a class="nav-link scrollto" href="#about">About</a></li>
+    <li><a class="nav-link scrollto" href="#features">Features</a></li>
+    <li class="dropdown"><a href="#/"><span>Seminar Halls</span> <i class="bi bi-chevron-down"></i></a>
+      <ul>
+        <li><a href="#seminar_halls">View All Halls</a></li>
+        <li><a href="#availability">Check Availability</a></li>
+      </ul>
+    </li>
+    <li><a class="nav-link scrollto" href="#team">Team</a></li>
+
+    {% if user.is_authenticated %}
+    <li class="dropdown"><a href="#/"> <span style="background-color: #4154f1; color: white; padding: 5px 15px; border-radius: 20px;"><i class="bi bi-person-fill" style="margin: 0; font-size: 16px;"></i> {{user.first_name}} {{user.last_name}}</span></a>
+      <ul id="loggedInProfile" style="padding: 10px; font-size: 14px;">
+        <li>
+          <div style="display: flex; align-items: center;">
+            <img src="{{ profile_picture_url }}" alt="{{ user.username }}" style="margin: 10px 10px 10px 0; height: 50px; width: 50px; border-radius: 50%;">
+            <div style="position:relative; display: flex; flex-direction: column;">
+              <span><strong>{{user.first_name}} {{user.last_name}}</strong></span>
+              <span>{{user.email}}</span>
+            </div>
+          </div>
+        </li>
+        <li><a href="{% url 'home' %}" style="justify-content: left; padding: 5px;"><i class="bi bi-list" style="font-size: inherit; margin: 0 10px 0 0;"></i> Main Menu</a></li>
+        <li><a href="{% url 'logout' %}" style="justify-content: left; padding: 5px;"><i class="bi bi-power" style="font-size: inherit; margin: 0 10px 0 0;"></i> Logout</a></li>
+      </ul>
+    </li>
+    {% else %}
+    <li><a class="getstarted scrollto" href="{% url 'login' %}">Login</a></li>
+    {% endif %}
+
+  </ul>
+{% endblock %}
+
+{% block mainPageContent %}
+  <section id="hero" class="hero d-flex align-items-center">
+
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 d-flex flex-column justify-content-center">
+          <h1 data-aos="fade-up">Seminar Hall Management System</h1>
+          <h2 data-aos="fade-up" data-aos-delay="400">Find an eazy way to book a seminar hall for the smooth conduction of your event in and around the campus of RVCE</h2>
+          <div data-aos="fade-up" data-aos-delay="600">
+            <div class="text-center text-lg-start">
+              <a href="{% url 'login' %}" class="btn-get-started scrollto d-inline-flex align-items-center justify-content-center align-self-center">
+                <span>Login</span>
+                <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 hero-img" data-aos="zoom-out" data-aos-delay="200">
+          <img src="/static/venue_1.png" class="img-fluid" alt="" style="transform: scale(0.8);">
+        </div>
+      </div>
+    </div>
+
+  </section><!-- End Hero -->
+
+  <main id="main">
+    <!-- ======= Counts Section ======= -->
+    <section id="about" class="counts">
+      <div class="container" data-aos="fade-up">
+
+        <header class="section-header">
+          <p>About</p>
+        </header>
+
+        <div class="row gy-4">
+
+          <div class="col-lg-3 col-md-6">
+            <div class="count-box">
+              <i class="bi bi-emoji-laughing"></i>
+              <div>
+                <span data-purecounter-start="0" data-purecounter-end="{{happy_clients}}" data-purecounter-duration="1" class="purecounter"></span>
+                <p>Happy Organizers</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="count-box">
+              <i id="cal_day" day="{{day}}" class="bi bi-calendar2" style="color: #ee6c20; --day: {{day}}"></i>
+              <div>
+                <span data-purecounter-start="0" data-purecounter-end="{{today_events}}" data-purecounter-duration="1" class="purecounter"></span>
+                <p>Events Today</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="count-box">
+              <i class="bi bi-person-video3" style="color: #15be56;"></i>
+              <div>
+                <span data-purecounter-start="0" data-purecounter-end="{{count_seminarHalls}}" data-purecounter-duration="1" class="purecounter"></span>
+                <p>Seminar Halls</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6">
+            <div class="count-box">
+              <i class="bi bi-people-fill" style="color: #bb0852;"></i>
+              <div>
+                <span data-purecounter-start="0" data-purecounter-end="{{users}}" data-purecounter-duration="1" class="purecounter"></span>
+                <p>Users</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <header class="section-header" style="margin-top: 20px;">
+          <p>{{total_events}} Events booked so far.. !</p>
+        </header>
+
+      </div>
+    </section><!-- End Counts Section -->
+
+    <!-- ======= Features Section ======= -->
+    <section id="features" class="services">
+
+      <div class="container" data-aos="fade-up">
+
+        <header class="section-header">
+          <p>Features</p>
+        </header>
+
+        <div class="row gy-4">
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="service-box blue">
+              <i class="ri-discuss-line icon"></i>
+              <h3>Book a Seminar Hall</h3>
+              <p>Staff, HoDs and Admin can book any seminar hall according to their requirements using this feature.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="service-box orange">
+              <i class="ri-discuss-line icon"></i>
+              <h3>View My Bookings</h3>
+              <p>This feature displays all the events booked by the user and also segregates them based on the booking status.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+            <div class="service-box green">
+              <i class="ri-discuss-line icon"></i>
+              <h3>Approve Requests</h3>
+              <p>Both HoD and Admin will have to verify an event before the seminar hall is blocked for the proposed event. No seminar hall will be allocated without approval.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+            <div class="service-box red">
+              <i class="ri-discuss-line icon"></i>
+              <h3>Manage Seminar Halls</h3>
+              <p>The admin has the choice to add new seminar halls and even block or update an existing seminar hall</p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
+            <div class="service-box purple">
+              <i class="ri-discuss-line icon"></i>
+              <h3>Manage Users</h3>
+              <p>The admin has a provision to add new a HoD if in future a new department comes up and the system has to be accessed by those HoDs as well. Similarly there is also a provision for adding staff by HoD.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="700">
+            <div class="service-box pink">
+              <i class="ri-discuss-line icon"></i>
+              <h3>Check Availability</h3>
+              <p>This features allows everyone with access to the system to check the list of seminar halls for their availability, for a given date, time and number of expected audience.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section><!-- End Features Section -->
+
+    <!-- ======= Portfolio Section ======= -->
+    <section id="seminar_halls" class="portfolio">
+
+      <div class="container" data-aos="fade-up">
+
+        <header class="section-header">
+          <p>Seminar Halls</p>
+        </header>
+
+        <div class="row gy-4 portfolio-container" data-aos="fade-up" data-aos-delay="200">
+
+          {% for hall in halls %}
+          <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+            <div class="portfolio-wrap">
+              <img src="/static/halls/{{hall.id}}.jpg" class="img-fluid" alt="">
+              <div class="portfolio-info">
+                <h4>{{hall.name}}</h4>
+                <p>Get details</p>
+                <div class="portfolio-links">
+                  <a href="{% url 'seminarhall' hall.id %}" title="More Details"><i class="bi bi-chevron-double-right"></i></a>
+                </div>
+              </div>
+              <h4 style="text-align: center; margin-top: 5px;">{{hall.name}}</h4>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+    </section><!-- End Portfolio Section -->
+
+    <!-- ======= Check Availability Section ======= -->
+    <section id="availability" class="portfolio contact">
+      <div class="container" data-aos="fade-up">
+
+        <header class="section-header">
+          <p>Check Seminar Hall Availability</p>
+        </header>
+    
+        <div class="row gy-4">
+    
+          <div class="col-lg-12">
+            <form action="/" method="POST" class="vb_form" style="background-color: #f2f5ff; padding: 30px;">
+              {% csrf_token %}
+              <div class="row gy-4">              
+                <div class="col-md-6">
+                  <input type="date" id="dateID" class="form-control date-time-field" name="event_date" style="--label: 'Date:'" required>
+                </div>
+
+                <div class="col-md-6">
+                    <input type="number" class="form-control" name="event_no_ppl" min="0" placeholder="Expected Audience" required>
+                </div>
+    
+                <div class="col-md-6">
+                  <input type="time" id = "startTime" step = "1800" class="form-control date-time-field" name="event_start" style="--label: 'Start Time:'" required>
+                </div>
+    
+                <div class="col-md-6">
+                  <input type="time" id = "endTime" step = "1800" class="form-control date-time-field" name="event_end" style="--label: 'End Time: '" required>
+                </div>    
+    
+                <div class="col-md-12 text-center">              
+                  <button type="submit">Check Availability</button>
+                </div>
+    
+              </div>
+            </form>              
+          </div>
+    
+        </div>
+    
+      </div>
+    </section><!-- End Check Availability Section -->
+
+    {% if submitted %}
+      {% if returnMessage %}
+        <header class="section-header">
+          <p>No Seminar Halls available</p>
+        </header>
+      {% else %}
+      <section id="available_seminar_halls" class="portfolio">
+
+        <div class="container" data-aos="fade-up">
+  
+          <header class="section-header">
+            <p>Available Seminar Halls</p>
+          </header>
+  
+          <div class="row gy-4 portfolio-container" data-aos="fade-up" data-aos-delay="200">
+  
+            {% for hall in availableHalls %}
+            <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+              <div class="portfolio-wrap">
+                <img src="/static/halls/{{hall.id}}.jpg" class="img-fluid" alt="">
+                <div class="portfolio-info">
+                  <h4>{{hall.name}}</h4>
+                  <p>Get details</p>
+                  <div class="portfolio-links">
+                    <a href="{% url 'seminarhall' hall.id %}" title="More Details"><i class="bi bi-chevron-double-right"></i></a>
+                  </div>
+                </div>
+                <h4 style="text-align: center; margin-top: 5px;">{{hall.name}}</h4>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+  
+      </section>
+      {% endif %}
+    {% endif %}
+
+    <!-- ======= Team Section ======= -->
+    <section id="team" class="team">
+
+      <div class="container" data-aos="fade-up">
+
+        <header class="section-header">
+          <p>Development Team</p>
+        </header>
+
+        <div class="row gy-4 justify-content-evenly">
+
+          <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
+            <div class="member">
+              <div class="member-img">
+                <img src="/static/team1.jpeg" class="img-fluid" alt="">
+                <!-- <div class="social">
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                </div> -->
+              </div>
+              <div class="member-info">
+                <h4>Prajwal N J</h4>
+                <span>Student of ISE, RVCE</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
+            <div class="member">
+              <div class="member-img">
+                <img src="/static/team2.jpg" class="img-fluid" alt="">
+                <!-- <div class="social">
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                </div> -->
+              </div>
+              <div class="member-info">
+                <h4>Sameeksha Keshav</h4>
+                <span>Student of ISE, RVCE</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section><!-- End Team Section -->
+
+  </main><!-- End #main -->
+{% endblock %}
+
+{% block scriptToBase %}
+
+  {% if availability %}
+    <script>
+      function getLocation() {
+        document.getElementById("availability").scrollIntoView();
+      }
+
+      if (window.addEventListener) {
+        window.addEventListener('load', getLocation);
+      } 
+      else if (window.attachEvent) {
+        window.attachEvent('onload', getLocation);
+      } else { 
+        window.onload = getLocation;
+      }
+    </script>
+  {% endif %}
+
+  <script>
+    var styleTag = document.createElement("style");
+    var day_to_put = document.getElementById('cal_day').getAttribute('day')
+    styleTag.innerHTML +=
+    "i.bi.bi-calendar2::after { \
+      content: '"+day_to_put+"'; \
+      font-style: normal; \
+      font-size: 0.375em; \
+      font-family: cursive; \
+      display: inline-block; \
+      transform: translateX(-36.5px); \
+      vertical-align: 0.25em; \
+    }";
+    document.head.appendChild(styleTag);
+  </script>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'display.html' %}
+
+{% block pageTitle %}{{obj.name}}{% endblock %}
+
+{% block displayMain %}
+<div class="container">
+    <div class="row gx-3 gy-4">
+
+        <div class="col-lg-8">
+            <div class="card text-center" style="border-radius: 0%; box-shadow: 0px 0 30px rgb(1 41 112 / 8%);">
+                <img src="/static/halls/{{obj.id}}.jpg" class="card-img-top" alt="">
+                <div class="card-body">
+                    {{obj.name}}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="portfolio-info" style="height: 100%;">
+                <h3>Seminar Hall Details</h3>
+                <div class="col-lg-12">
+                    <ul style="margin: 0;">
+                        <li><strong>Hall Name</strong>: {{obj.name}}</li>
+                        <li><strong>Capacity</strong>: {{obj.capacity}}</li>
+                        <li><strong>Incharge Details</strong>: {{obj.incharge}}</li>
+                        <br><br>
+                        <li><strong>Status</strong>: {{obj.status}}</li>
+                    </ul>
+                </div>
+                {% if "Blocked" in obj.status %}
+                    <br><br>
+                    <h6><strong>Note</strong>: This seminar hall is been blocked by the Admin, and cannot be booked for any purposes. If it's required, please contact the Admin to activate it.</h6>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block styleToDisplay %}
+{% endblock %}
+
+{% block scriptToDisplay %}
+{% endblock %}

@@ -1,0 +1,173 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>VenueBooker</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="/static/assets/img/favicon.png" rel="icon">
+  <link href="/static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="/static/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/static/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="/static/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="/static/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+
+  <style>
+    @media (max-width: 767px) {
+      .footer-contact {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+
+  {% block styleToBase %}
+  {% endblock %}
+
+</head>
+
+<body>
+
+  <!-- ======= Toast (Messages) ======= -->
+  {% if returnMessage %}  
+  <div class="toast-container position-fixed bottom-0 end-0 p-3" onchange="alert('yepppppp!!!!')">
+    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <img src="/static/assets/img/logo.png" class="rounded me-2" alt="..." style="width: 30px; height: 20px;">
+        <strong class="me-auto">Venue Booker</strong>
+        <small>just now</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">
+        {{returnMessage}}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  <!-- End Toast -->
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top" style="background: white;">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+
+      <a href="{% url 'index' %}" class="logo d-flex align-items-center">
+        <img class="projLogo" src="/static/assets/img/logo.png" alt="">
+        <span>VenueBooker</span>
+      </a>
+
+      <!-- == .navbar == -->
+      <nav id="navbar" class="navbar">
+        {% block navbar %}
+
+        {% endblock %}
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+
+  <!-- == Main page == -->
+  {% block mainPageContent %}
+  {% endblock %}  
+  <!-- End #main -->
+
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+
+    <div class="footer-top">
+      <div class="container" style="color: #012970;">
+        <div class="row gy-4" style="align-items: center;">
+          <div class="col-lg-5 col-md-12 footer-info">
+            <img src="/static/rv1.png" alt="" style="width: 100%;">
+          </div>
+          <div class="col-lg-2 col-md-12 footer-info">
+          </div>
+          <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start footer-info">
+            <a href="{% url 'index' %}" class="logo d-flex align-items-center">
+              <img class="projLogo" src="/static/assets/img/logo.png" alt="">
+              <span>VenueBooker</span>
+            </a>
+            <br>
+            <h4>Contact Emails</h4>
+            <p style="margin: 0%;">
+              <strong>Email 1:</strong> prajwalnj.is20@rvce.edu.in<br>
+              <strong>Email 2:</strong> sameekshak.is20@rvce.edu.in<br>
+            </p>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="credits" style="text-align: left;font-size: 10px;">
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center" style="border-radius: 50%;"><i class="bi bi-chevron-up"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="/static/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="/static/assets/vendor/aos/aos.js"></script>
+  <script src="/static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/static/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="/static/assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="/static/assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="/static/assets/js/main.js"></script>
+
+  <script>
+
+    window.onload = (event) => {
+        const toastLiveExample = document.getElementById('liveToast')
+        if (toastLiveExample) {
+            const toast = new bootstrap.Toast(toastLiveExample)
+            toast.show()
+        }        
+    }
+    
+  </script>
+
+
+  <script>
+    dateID = document.getElementById('dateID')
+    if(dateID) {
+      dateID.min = new Date().toISOString().split("T")[0];
+    }
+    startTime = document.getElementById("startTime");
+    endTime = document.getElementById("endTime");
+    if(startTime) {startTime.min = "09:00";}
+    if(endTime) {endTime.max = "16:45";}
+  </script>
+
+  {% block scriptToBase %}
+  {% endblock %}
+
+</body>
+
+</html>

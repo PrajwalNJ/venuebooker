@@ -1,0 +1,40 @@
+{% extends 'admin_main.html' %}
+
+{% block rightUserContent %}
+
+<section id="view_hod" class="contact menu-content-item">
+    <div class="container">
+
+        <header class="section-header">
+          <p>View HoDs</p>
+        </header>
+    
+        <div class="row gy-4" style="overflow-x: auto;">
+    
+          <div class="col-lg-12">
+            <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">HoD Id</th>
+                    <th scope="col">Email Address</th>
+                    <th scope="col">Department Code</th>
+                  </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for i in HoD %}
+                        <tr>
+                            <th scope="row">{{i.id}}</th>
+                            <td>{{i.email}}</td>
+                            <td>{{i.code}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+              </table>              
+          </div>
+    
+        </div>
+    
+    </div>
+</section>
+
+{% endblock %}

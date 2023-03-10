@@ -1,0 +1,102 @@
+{% extends 'admin_main.html' %}
+
+{% block rightUserContent %}
+
+<section id="update_sem" class="contact menu-content-item">
+    <div class="row gy-4">
+        <div class="col-lg-6">
+            <div class="container">
+
+                <header class="section-header">
+                  <p>Update Details</p>
+                </header>
+            
+                <div class="row gy-4">
+            
+                  <div class="col-lg-12">
+                    <form action="{% url 'admin_updateSem' %}" method="post" class="vb_form" style="background-color: #f2f5ff; padding: 30px;" enctype="multipart/form-data">
+                      {% csrf_token %}  
+                      <div class="row gy-4">
+                        <div class="col-md-12">
+                            <select class="form-select" name="sem_hall_selected" aria-label="" required>
+                                <option value="" style="padding: 10px 15px; box-shadow: none; font-size: 14px; border-radius: 0;">Select Seminar Hall</option>
+                                {% for i in halls %}
+                                    <option value="{{i.name}}">{{i.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <input type="number" class="form-control" name="sem_capacity" placeholder="Seminar Hall Capacity" required>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <textarea class="form-control" name="sem_incharge" rows="3" placeholder="Incharge Details (Name, Ph. No., ..)" required></textarea>
+                        </div>               
+            
+                        <!-- enctype="multipart/form-data" -->
+                        <div class="col-md-12">
+                            <!-- put for = /name/ -->
+                            <label for="sem_pic" class="form-label">Update Seminar Hall Picture:</label>
+                            <input type="file" name="sem_pic" class="form-control" accept="image/*" required>
+                        </div>
+            
+                        <div class="col-md-12 text-center">              
+                            <button type="submit">Submit</button>
+                        </div>
+            
+                      </div>
+                    </form>              
+                  </div>
+            
+                </div>
+            
+            </div>
+        </div>  
+
+        <div class="col-lg-6">
+            <div class="container">
+
+                <header class="section-header">
+                  <p>Update Status</p>
+                </header>
+            
+                <div class="row gy-4">
+            
+                  <div class="col-lg-12">
+                    <form action="{% url 'admin_statusSem' %}" method="post" class="vb_form" style="background-color: #f2f5ff; padding: 30px;">
+                      {% csrf_token %}  
+                      <div class="row gy-4">
+                        <div class="col-md-12">
+                            <select class="form-select" name="sem_hall_selected" aria-label="" required>
+                                <option value="" style="padding: 10px 15px; box-shadow: none; font-size: 14px; border-radius: 0;">Select Seminar Hall</option>
+                                {% for i in halls %}
+                                    <option value="{{i.name}}">{{i.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <select class="form-select" name="sem_hall_status" aria-label="" required>
+                                <option value="" style="padding: 10px 15px; box-shadow: none; font-size: 14px; border-radius: 0;">Select Status (Active/Blocked)</option>
+                                <option value="Active">Active</option>
+                                <option value="Blocked">Block</option>
+                            </select>
+                        </div>
+            
+                        <div class="col-md-12 text-center">              
+                            <button type="submit">Submit</button>
+                        </div>
+            
+                      </div>
+                    </form>              
+                  </div>
+            
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

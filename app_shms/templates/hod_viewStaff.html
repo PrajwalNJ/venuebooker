@@ -1,0 +1,40 @@
+{% extends 'hod_main.html' %}
+
+{% block rightUserContent %}
+
+<section id="view_staff" class="contact menu-content-item">
+  <div class="container">
+
+      <header class="section-header">
+        <p>View Staff</p>
+      </header>
+  
+      <div class="row gy-4" style="overflow-x: auto;">
+  
+        <div class="col-lg-12">
+          <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">Staff ID</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Email</th>
+                </tr>
+              </thead>
+              <tbody class="table-group-divider">
+                {% for i in Staff %}
+                <tr>
+                  <th scope="row">{{i.id}}</th>
+                  <td>{{i.name}}</td>
+                  <td>{{i.email}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>              
+        </div>
+  
+      </div>
+  
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'hod_main.html' %}
+
+{% block rightUserContent %}
+
+<section id="add_staff" class="contact menu-content-item">
+    <div class="container">
+
+        <header class="section-header">
+          <p>Add Staff</p>
+        </header>
+    
+        <div class="row gy-4">
+    
+          <div class="col-lg-12">
+            <form method="post" class="vb_form" style="background-color: #f2f5ff; padding: 30px;">
+              {% csrf_token %}
+              <div class="row gy-4">              
+                <div class="col-md-12">
+                  <input type="email" class="form-control" name="staff_email" placeholder="Enter Staff Email" required>
+                </div>
+                
+                <div class="col-md-12 text-center">              
+                  <button type="submit">Submit</button>
+                </div>
+    
+              </div>
+            </form>              
+          </div>
+    
+        </div>
+    
+    </div>
+</section>
+
+{% endblock %}

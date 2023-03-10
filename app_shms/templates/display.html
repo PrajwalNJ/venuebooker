@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block navbar %}
+    <ul>
+        <li><a class="nav-link scrollto" href="{% url 'index' %}">Home</a></li>
+
+        {% if request.user.is_authenticated %}
+        <li class="dropdown"><a href="#/"> <span style="background-color: #4154f1; color: white; padding: 5px 15px; border-radius: 20px;"><i class="bi bi-person-fill" style="margin: 0; font-size: 16px;"></i> {{user.first_name}} {{user.last_name}}</span></a>
+        <ul id="loggedInProfile" style="padding: 10px; font-size: 14px;">
+            <li>
+            <div style="display: flex; align-items: center;">
+                <img src="{{ profile_picture_url }}" alt="{{ user.username }}" style="margin: 10px 10px 10px 0; height: 50px; width: 50px; border-radius: 50%;">
+                <div style="position:relative; display: flex; flex-direction: column;">
+                <span><strong>{{user.first_name}} {{user.last_name}}</strong></span>
+                <span>{{user.email}}</span>
+                </div>
+            </div>
+            </li>
+            <li><a href="{% url 'home' %}" style="justify-content: left; padding: 5px;"><i class="bi bi-list" style="font-size: inherit; margin: 0 10px 0 0;"></i> Main Menu</a></li>
+            <li><a href="{% url 'logout' %}" style="justify-content: left; padding: 5px;"><i class="bi bi-power" style="font-size: inherit; margin: 0 10px 0 0;"></i> Logout</a></li>
+        </ul>
+        </li>
+        {% else %}
+        <li><a class="getstarted scrollto" href="{% url 'login' %}">Login</a></li>
+        {% endif %}
+    </ul>
+{% endblock %}
+
+{% block mainPageContent %}
+<main id="main">
+
+    <section class="breadcrumbs">
+        <div class="container">
+
+            <h2 style="margin: 0;">{% block pageTitle %}{% endblock %}</h2>
+
+        </div>
+    </section>
+
+    <section class="inner-page" style="padding: 30px 0;">
+        <div class="container">
+            <section id="portfolio-details" class="portfolio-details">
+                {% block displayMain %}
+                {% endblock %}
+            </section>
+        </div>
+    </section>
+
+</main>
+{% endblock %}
+
+
+{% block styleToBase %}
+
+    {% block styleToDisplay %}
+    {% endblock %}
+
+{% endblock %}
+
+
+{% block scriptToBase %}
+    
+    {% block scriptToDisplay %}
+    {% endblock %}
+
+{% endblock %}
