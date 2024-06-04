@@ -37,6 +37,7 @@ def index(request):
     context['total_events'] =event.objects.count()
 
     context['halls'] = seminarHall.objects.filter(status = "Active")
+    context['all_halls'] = seminarHall.objects.all()
     print(context['halls'])
     if request.method == "POST":
         context['submitted'] = True
@@ -64,7 +65,7 @@ def index(request):
 
             if not available:
                 context['returnMessage'] = "No Seminar Halls are available for the entered requirement."
-            
+
             context['availability'] = True
 
     return render(request, 'index.html',context)
@@ -101,7 +102,7 @@ def home(request):
         return render(request, "index.html", context)
 
 
-    
+
 def logout_view(request):
     try:
         logout(request)
@@ -110,7 +111,7 @@ def logout_view(request):
     return redirect("/")
 
 def login(request):
-    return render(request, 'login_vb.html') 
+    return render(request, 'login_vb.html')
 
 
 @login_required
@@ -169,7 +170,8 @@ def staff_booking(request):
                                     first_name = user.first_name
                                 except User.DoesNotExist:
                                     first_name = email.split('@')[0]
-                                response = send_mail("Event Has been requested by " + first_name,"Hello HoD "+hod_id.code+ " there are requests waiting for you on the venue booker portal please login and look into it\n\n Thank you\nRegards\n","sameeksha.keshav@gmail.com",[hod_id.email],fail_silently=False)
+                                response = send_mail("[VenueBooker] Event Has been requested by " + first_name,"Hello HoD "+hod_id.code+ "! \nNew booking requests have been raised on VenueBooker, that are waiting for your verification. \n\nPlease login to VenueBooker (https://prajwalnj.pythonanywhere.com) using your RVCE Google Account and verify them. \n\nThank you\nRegards\nVenueBooker Team","sameeksha.keshav@gmail.com",[hod_id.email],fail_silently=False)
+                                response1 = send_mail("[VenueBooker] You have raised a booking request!", "Hello "+first_name+"!\nWe received a booking request from your end. The same has been forworded to the requested personnel for approval.\n\nThe request raised is for - \""+name+"\" with, \nBooking ID: RV"+str(user_id.id)+"VB"+str(obj.id) +"\n\nCurrent Status: Pending \n\nPlease use these for further communications. Meanwhile, you may login to VenueBooker (https://prajwalnj.pythonanywhere.com) using your RVCE Google Account and track your event approval status.\n\nThank you\nRegards\nVenueBooker Team","sameeksha.keshav@gmail.com",[user_id.email],fail_silently=False)
                             except:
                                     context['returnMessage'] = "Request cannot be made"
                         else:
@@ -181,7 +183,7 @@ def staff_booking(request):
             return render(request,"staff_booking.html", context)
 
     return HttpResponse("Bad request\n Not authorized to view the page")
-    
+
 @login_required
 def hod_main(request):
     context = {}
@@ -202,8 +204,8 @@ def hod_addStaff(request):
         if(person.designation == "HoD"):
             if request.method == 'POST':
                 email = request.POST.get('staff_email')
-                name = users.objects.get(email = request.user.email).department  
-                code = users.objects.get(email = request.user.email).code      
+                name = users.objects.get(email = request.user.email).department
+                code = users.objects.get(email = request.user.email).code
                 try:
                     obj = users(email = email,department = name, code = code,designation = "Staff")
                     obj.save()
@@ -226,13 +228,13 @@ def hod_viewStaff(request):
             for i in user:
                 try:
                     user = User.objects.get(email=i.email)
-                    first_name = user.first_name + user.last_name
+                    first_name = user.first_name +' '+ user.last_name
                 except User.DoesNotExist:
                     first_name = i.email.split('@')[0]
                 Staff.append({'id':i.id,'name':first_name,'email':i.email})
             context['Staff'] = Staff
             return render(request,'hod_viewStaff.html',context)
-    
+
     return HttpResponse("Bad request\n Not authorized to view the page")
 
 @login_required
@@ -279,7 +281,9 @@ def hod_booking(request):
                                     first_name = user.first_name
                                 except User.DoesNotExist:
                                     first_name = email.split('@')[0]
-                                response = send_mail("Event Has been requested by " + first_name,"Hello Admin!\n there are requests waiting for you on the venue booker portal please login and look into it\n\n Thank you\nRegards\n","sameeksha.keshav@gmail.com",[admin_id.email],fail_silently=False)
+                                # response = send_mail("Event Has been requested by " + first_name,"Hello Admin!\n there are requests waiting for you on the venue booker portal please login and look into it\n\n Thank you\nRegards\n","sameeksha.keshav@gmail.com",[admin_id.email],fail_silently=False)
+                                response = send_mail("[VenueBooker] Event Has been requested by " + first_name, "Hello Admin! \nNew booking requests have been raised on VenueBooker, that are waiting for your verification. \n\nPlease login to VenueBooker (https://prajwalnj.pythonanywhere.com) using your RVCE Google Account and verify them. \n\nThank you\nRegards\nVenueBooker Team","sameeksha.keshav@gmail.com",[admin_id.email],fail_silently=False)
+                                response1 = send_mail("[VenueBooker] You have raised a booking request!", "Hello "+first_name+"!\nWe received a booking request from your end. The same has been forworded to the Admin for approval.\n\nThe request raised is for - \""+name+"\" with, \nBooking ID: RV"+str(user_id.id)+"VB"+str(obj.id) +"\n\nCurrent Status: Pending \n\nPlease use these for further communications. Meanwhile, you may login to VenueBooker (https://prajwalnj.pythonanywhere.com) using your RVCE Google Account and track your event approval status.\n\nThank you\nRegards\nVenueBooker Team","sameeksha.keshav@gmail.com",[user_id.email],fail_silently=False)
                             except:
                                     context['returnMessage'] = "Request could not be made"
                         else:
@@ -289,7 +293,7 @@ def hod_booking(request):
                 else:
                     context['returnMessage'] = "Sorry the selected seminar hall cannot hold the audience"
             return render(request,"HoD_booking.html", context)
-    
+
     return HttpResponse("Bad request\n Not authorized to view the page")
 
 @login_required
@@ -340,9 +344,12 @@ def hod_requests(request):
                     status = "Expired"
                     final = "Expired"
                 id = "RV"+str(i.user_id.id)+"VB"+str(i.id)
-                all.append({ 'name' : name, 'organizer_email': organizer_email,'first_name':first_name,'HoD':HoD,'venue':venue, 'venueId': venueId, 
+                all.append({ 'name' : name, 'organizer_email': organizer_email,'first_name':first_name,'HoD':HoD,'venue':venue, 'venueId': venueId,
                             'Date' : Date, 'startTime':StartTime, 'endTime':EndTime,'audience':Audience,'status':status,'final':final,'id':id, 'eventId': i.id})
+
+                all.reverse()
                 context['requests'] = all
+
             return render(request,'HoD_requests.html',context)
 
     return HttpResponse("Bad request\n Not authorized to view the page")
@@ -403,7 +410,9 @@ def admin_booking(request):
                                     first_name = user.first_name
                                 except User.DoesNotExist:
                                     first_name = email.split('@')[0]
-                                response = send_mail("Event Has been requested by " + first_name,"Hello!!\n Your event with the following details has been approved.\n"+"Event name:"+obj.name+"\n"+"Date:"+obj.date+"\n"+"Start Time:"+obj.start_time+"\n"+"End Time:"+obj.end_time+"\n"+"location:"+location_id.name+"\n"+"Incharge Details:"+location_id.incharge+"\n"+"Please contact the incharge for further details and confirmation", "sameeksha.keshav@gmail.com", [admin_id.email], fail_silently=False)
+                                # response = send_mail("Event Has been requested by " + first_name,"Hello!!\n Your event with the following details has been approved.\n"+"Event name:"+obj.name+"\n"+"Date:"+obj.date+"\n"+"Start Time:"+obj.start_time+"\n"+"End Time:"+obj.end_time+"\n"+"location:"+location_id.name+"\n"+"Incharge Details:"+location_id.incharge+"\n"+"Please contact the incharge for further details and confirmation", "sameeksha.keshav@gmail.com", [admin_id.email], fail_silently=False)
+                                # response = send_mail("[VenueBooker] Event Has been requested by " + first_name, "Hello Admin! \nNew booking requests have been raised on VenueBooker, that are waiting for your verification. \n\nPlease login to VenueBooker (https://prajwalnj.pythonanywhere.com) using your RVCE Google Account and verify them. \n\nThank you\nRegards\nVenueBooker Team","sameeksha.keshav@gmail.com",[admin_id.email],fail_silently=False)
+                                response = send_mail("[VenueBooker] You have raised a booking request!", "Hello "+first_name+"!\nWe received a booking request from your end. The booking was successful and is approved.\n\nThe booking raised is for - \""+name+"\" with, \nBooking ID: RV"+str(user_id.id)+"VB"+str(obj.id) +"\n\nCurrent Status: Approved \n\nPlease use these for further communications. Meanwhile, you may login to VenueBooker (https://prajwalnj.pythonanywhere.com) using your RVCE Google Account and verify the status of the booked event.\n\nThank you\nRegards\nVenueBooker Team","sameeksha.keshav@gmail.com",[user_id.email],fail_silently=False)
                             except:
                                     context['returnMessage'] = "Request could not be made"
                         else:
@@ -453,14 +462,17 @@ def admin_requests(request):
                 elif(i.status_Admin == "rejected"):
                     status = "Rejected by Admin"
                     final = "Rejected"
-                
+
                 if(i.date<today):
                     status = "Expired"
                     final = "Expired"
                 id = "RV"+str(i.user_id.id)+"VB"+str(i.id)
-                all.append({ 'name' : name, 'organizer_email': organizer_email,'first_name':first_name,'HoD':HoD,'venue':venue, 'venueId': venueId, 
+                all.append({ 'name' : name, 'organizer_email': organizer_email,'first_name':first_name,'HoD':HoD,'venue':venue, 'venueId': venueId,
                             'Date' : Date, 'startTime':StartTime, 'endTime':EndTime,'audience':Audience,'status':status,'final':final,'id':id, 'eventId': i.id})
+
+                all.reverse()
                 context['requests'] = all
+
             return render(request,'admin_requests.html', context)
 
     return HttpResponse("Bad request\n Not authorized to view the page")
@@ -513,7 +525,7 @@ def admin_addSem(request):
                 try:
                     obj = seminarHall(capacity = capacity, name = name, incharge = incharge)
                     obj.save()
-                    image_path = default_storage.save('app_shms/static/halls/' + str(obj.id)+'.jpg', image_file)
+                    image_path = default_storage.save('venuebooker/app_shms/static/halls/' + str(obj.id)+'.jpg', image_file)
                     context['returnMessage'] = "Seminar Hall successfully added"
                 except:
                     context['returnMessage'] = "Seminar Hall could not be added"
@@ -535,11 +547,14 @@ def admin_updateSem(request):
                 incharge = request.POST.get('sem_incharge')
                 image_file = request.FILES['sem_pic']
                 try:
-                    obj = seminarHall.objects.get(name = name)
+                    obj_to_del = seminarHall.objects.get(name = name)
+                    obj_to_del.delete()
+
+                    obj = seminarHall(capacity = capacity, name = name, incharge = incharge)
                     obj.capacity = capacity
                     obj.incharge = incharge
                     obj.save()
-                    image_path = default_storage.save('app_shms/static/halls/' + str(obj.id)+'.jpg', image_file)
+                    image_path = default_storage.save('venuebooker/app_shms/static/halls/' + str(obj.id)+'.jpg', image_file)
                     context['returnMessage'] = "Seminar Hall successfully updated"
                 except:
                     context['returnMessage'] = "Seminar Hall could not be updated"
@@ -590,7 +605,7 @@ def view_bookings(request):
                 first_name = user.first_name +' '+ user.last_name
             except User.DoesNotExist:
                 first_name = organizer_email.split('@')[0]
-            
+
             if organizer_designation == "Admin":
                 HoD = "N/A"
             else:
@@ -627,6 +642,8 @@ def view_bookings(request):
             id = "RV"+str(i.user_id.id)+"VB"+str(i.id)
             all.append({ 'name' : name, 'organizer_email': organizer_email,'first_name':first_name,'HoD':HoD,'venue':venue, 'venueId': venueId,
                         'Date' : Date, 'startTime':StartTime, 'endTime':EndTime,'audience':Audience,'status':status,'final':final,'id':id, 'eventId': i.id})
+
+            all.reverse()
             context['requests'] = all
 
         person = users.objects.get(email=request.user.email)
@@ -637,7 +654,7 @@ def view_bookings(request):
             return render(request,'hodViewBookings.html', context)
         elif(person.designation == "Staff"):
             return render(request,'staffViewBookings.html', context)
-        
+
         # return render(request,'hodViewBookings.html', context) #################################### OYEEEEEEEEEE REMOVE THIS!!!!!!!!!
 
     return HttpResponse("Bad request\n Not authorized to view the page")
@@ -677,7 +694,7 @@ def event_view(request, id, returnMessage):
                     first_name = user.first_name +' '+ user.last_name
                 except User.DoesNotExist:
                     first_name = organizer_email.split('@')[0]
-                
+
                 if organizer_designation == "Admin":
                     HoD = "N/A"
                 else:
@@ -711,7 +728,7 @@ def event_view(request, id, returnMessage):
                     status = "Expired"
                     final = "Expired"
                 id = "RV"+str(i.user_id.id)+"VB"+str(i.id)
-                
+
                 Agenda = i.agenda
                 HoD_feedback = i.feedback_HoD
                 admin_feedback = i.feedback_Admin
@@ -725,12 +742,12 @@ def event_view(request, id, returnMessage):
 
                 print(context)
                 return render(request, 'event_view.html', context)
-            
+
             else:
                 return HttpResponse("Bad request\n Not authorized to view the page")
 
         except:
-            return HttpResponse("Bad Request\n The event does not exist\n")       
+            return HttpResponse("Bad Request\n The event does not exist\n")
 
     return HttpResponse("Bad request\n Not authorized to view the page")
 
@@ -745,6 +762,9 @@ def event_request(request, id):
             feedback = request.POST.get('feedback')
             clicked_button = request.POST.get('action')
             print(clicked_button)
+
+            admin_id = users.objects.get(designation = "Admin")
+
             if clicked_button == 'approve':
                 if(person.designation == "HoD"):
                     try:
@@ -753,6 +773,9 @@ def event_request(request, id):
                         obj.feedback_HoD = feedback
                         obj.save()
                         returnMessage = "Event Approved"
+
+                        response = send_mail("[VenueBooker] Event Request has been raised", "Hello Admin! \nNew booking requests have been raised on VenueBooker, that are waiting for your verification. \n\nPlease login to VenueBooker (https://prajwalnj.pythonanywhere.com) using your RVCE Google Account and verify them. \n\nThank you\nRegards\nVenueBooker Team","sameeksha.keshav@gmail.com",[admin_id.email],fail_silently=False)
+                        response = send_mail("[VenueBooker] Update on Request - RV"+str(obj.user_id.id)+"VB"+str(obj.id), "Hello!\nWe are pleased to inform you that your booking request is approved by the request personnel and is awaiting Admin approval.\n\nThe booking request was for - \""+obj.name+"\" with, \nBooking ID: RV"+str(obj.user_id.id)+"VB"+str(obj.id) +"\n\nCurrent Status: Pending\n\nPlease use these for further communications. Meanwhile, you may login to VenueBooker (https://prajwalnj.pythonanywhere.com) using your RVCE Google Account and verify the status of the booked event.\n\nYou may also find some feedback/suggestions from the approving personnel.\n\nThank you\nRegards\nVenueBooker Team","sameeksha.keshav@gmail.com",[obj.user_id.email],fail_silently=False)
                     except:
                         returnMessage = "Event could not be approved"
                 elif(person.designation == "Admin"):
@@ -762,6 +785,8 @@ def event_request(request, id):
                         obj.feedback_Admin = feedback
                         obj.save()
                         returnMessage = "Event Approved"
+
+                        response = send_mail("[VenueBooker] Update on Request - RV"+str(obj.user_id.id)+"VB"+str(obj.id), "Hello!\nWe are pleased to inform you that your booking request is approved by the Admin and your requested seminar hall is allocated.\n\nThe booking request was for - \""+obj.name+"\" with, \nBooking ID: RV"+str(obj.user_id.id)+"VB"+str(obj.id) +"\n\nCurrent Status: Approved\n\nFor more details of the booking, you may login to VenueBooker (https://prajwalnj.pythonanywhere.com) using your RVCE Google Account and verify the status and details of the booked event.\n\nYou may also find some feedback/suggestions from the Admin.\n\nThank you\nRegards\nVenueBooker Team","sameeksha.keshav@gmail.com",[obj.user_id.email],fail_silently=False)
                     except:
                         returnMessage = "Event could not be approved"
                 else:
@@ -774,6 +799,8 @@ def event_request(request, id):
                         obj.feedback_HoD = feedback
                         obj.save()
                         returnMessage = "Event Rejected"
+
+                        response = send_mail("[VenueBooker] Update on Request - RV"+str(obj.user_id.id)+"VB"+str(obj.id), "Hello!\nWe are sorry to inform you that your booking request is rejected by the request personnel.\n\nThe booking request was for - \""+obj.name+"\" with, \nBooking ID: RV"+str(obj.user_id.id)+"VB"+str(obj.id) +"\n\nCurrent Status: Rejected\n\nPlease use these for further communications. Meanwhile, you may login to VenueBooker (https://prajwalnj.pythonanywhere.com) using your RVCE Google Account and verify the status of the booked event.\n\nYou may also find some feedback/suggestions from the approving personnel.\n\nThank you\nRegards\nVenueBooker Team","sameeksha.keshav@gmail.com",[obj.user_id.email],fail_silently=False)
                     except:
                         returnMessage = "Event could not be Rejected"
                 elif(person.designation == "Admin"):
@@ -784,11 +811,13 @@ def event_request(request, id):
                         obj.save()
                         returnMessage = "Event rejected"
                         print(obj.feedback_Admin)
+
+                        response = send_mail("[VenueBooker] Update on Request - RV"+str(obj.user_id.id)+"VB"+str(obj.id), "Hello!\nWe are sorry to inform you that your booking request is rejected by the Admin.\n\nThe booking request was for - \""+obj.name+"\" with, \nBooking ID: RV"+str(obj.user_id.id)+"VB"+str(obj.id) +"\n\nCurrent Status: Rejected\n\nFor more details of the booking, you may login to VenueBooker (https://prajwalnj.pythonanywhere.com) using your RVCE Google Account and verifying the details under 'My Bookings' section.\n\nYou may also find some feedback/suggestions from the Admin.\n\nThank you\nRegards\nVenueBooker Team","sameeksha.keshav@gmail.com",[obj.user_id.email],fail_silently=False)
                     except:
                         returnMessage = "Event could not be rejected"
                 else:
                     return HttpResponse("Bad Request")
-                
+
         return redirect(reverse('event_view', args=[id, returnMessage]))
 
     return HttpResponse("Bad request\n Not authorized to view the page")
