@@ -147,7 +147,7 @@
         </div>
 
         <header class="section-header" style="margin-top: 20px;">
-          <p>{{total_events}} Events booked so far.. !</p>
+          <p>{{total_events}} Events booked so far..!</p>
         </header>
 
       </div>
@@ -229,7 +229,7 @@
 
         <div class="row gy-4 portfolio-container" data-aos="fade-up" data-aos-delay="200">
 
-          {% for hall in halls %}
+          {% for hall in all_halls %}
           <div class="col-lg-4 col-md-6 portfolio-item filter-app">
             <div class="portfolio-wrap">
               <img src="/static/halls/{{hall.id}}.jpg" class="img-fluid" alt="">

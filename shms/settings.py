@@ -14,9 +14,15 @@ from pathlib import Path
 
 SENDGRID_API_KEY = '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'
 
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+# EMAIL_HOST = 'smtp.sendgrid.net'
+# EMAIL_HOST_USER = 'apikey'
+# EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "sameeksha.keshav@gmail.com"
+EMAIL_HOST_PASSWORD = 'spliaakuxmwbukvr'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
@@ -34,7 +40,7 @@ SECRET_KEY = 'django-insecure-6&y_mu--j-d3esql+ue9+ey&b=g6z!c!%5q49@jf($u3e4vzx+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.vercel.app']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -52,9 +58,9 @@ INSTALLED_APPS = [
 
 
     ########   add  alll theese ....................   addddd
-    'app_shms.apps.AppShmsConfig',     # app-name        
-    "django.contrib.sites",        
-    "allauth", 
+    'app_shms.apps.AppShmsConfig',     # app-name
+    "django.contrib.sites",
+    "allauth",
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
@@ -152,6 +158,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
+STATIC_ROOT = "/home/PrajwalNJ/venuebooker/app_shms/static"
 STATIC_URL = 'static/'
 
 # Default primary key field type

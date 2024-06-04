@@ -57,7 +57,7 @@
                                     <div class="accordion-body">
                                         <div class="accordion accordion-flush" id="accordionFlushExample">
                                             {% block sideMenuContent %}
-                                            
+
                                             {% endblock %}
                                         </div>
                                     </div>
@@ -69,7 +69,7 @@
                     <!-- == Right side main content == -->
                     <div class="col-lg-9">
                         {% block rightUserContent %}
-                        
+
                         {% endblock %}
                     </div><!-- End of Right side main content -->
                 </div>
@@ -139,13 +139,19 @@
                     for(var i=0; i < event_cards.length; i++) {
                         event_cards[i].style.display = "";
                     }
+                    if(event_cards.length == 0) {
+                        document.getElementById('emptylistpic').style.display = "";
+                    }
+                    else {
+                        document.getElementById('emptylistpic').style.display = "none";
+                    }
                 }
                 else {
                     var count = 0;
                     for(var i=0; i < events_list.length; i++) {
                         status = events_list[i].getAttribute('status_value');
                         event_card = events_list[i].parentElement.parentElement.parentElement.parentElement.parentElement;
-                        if(status == selected) {                        
+                        if(status == selected) {
                             event_card.style.display = "";
                             count += 1;
                         }
